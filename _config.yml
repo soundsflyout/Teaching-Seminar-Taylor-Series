@@ -3,7 +3,8 @@
 
 title: An Introduction to Taylor's Theorem
 author: Se-Jin Kim
-#logo: logo.png
+copyright: "2025"
+logo: ""
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
