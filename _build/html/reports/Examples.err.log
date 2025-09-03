@@ -1,0 +1,98 @@
+Traceback (most recent call last):
+  File "/home/sparkle/Documents/Python/TaylorsSeries/.venv/lib/python3.13/site-packages/jupyter_core/utils/__init__.py", line 154, in wrapped
+    asyncio.get_running_loop()
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/sparkle/Documents/Python/TaylorsSeries/.venv/lib/python3.13/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "/home/sparkle/Documents/Python/TaylorsSeries/.venv/lib/python3.13/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/sparkle/Documents/Python/TaylorsSeries/.venv/lib/python3.13/site-packages/jupyter_core/utils/__init__.py", line 158, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/home/sparkle/Documents/Python/TaylorsSeries/.venv/lib/python3.13/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "/home/sparkle/Documents/Python/TaylorsSeries/.venv/lib/python3.13/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/sparkle/Documents/Python/TaylorsSeries/.venv/lib/python3.13/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+taylor_approximate_cos = lambda degree, x: sum([((-1)**(k//2))*x**k/math.factorial(k) for k in range(0,degree+1,2)])
+
+
+x =np.linspace(-200,200,10000)
+cosine =np.cos(x)
+cosine_approx = taylor_approximate_cos(4,x)
+
+cos_approx = ColumnDataSource(data=dict(x=x, y =cosine_approx))
+cos_true = ColumnDataSource(data=dict(x=x, y=cosine))
+
+cos_plot = figure(title="Taylor Approximation of cos(x)", 
+              tools="crosshair,pan,reset,save",
+              x_range=[-6,6], y_range=[-5,5])
+
+cos_plot.line('x', 'y', source=cos_approx, line_width=3, line_alpha=0.8, color = "red")
+cos_plot.line('x','y', source=cos_true, line_width=3, line_alpha=0.8, color ="blue")
+
+cos_degree = Slider(title="degree", value=4, start=0, end=20, step=2)
+
+cos_callback = CustomJS(args=dict(source=cos_approx), code=""" 
+    const d = cb_obj.value
+    const x = source.data.x
+
+    function cos_approx(d,x) {
+        let soln = 0;
+        let factorial = 1;
+        for (let i=0; i <=d; i++) {
+            if (i != 0) {
+                factorial = factorial*i;
+            }
+            if (i % 2 == 0) { 
+                soln += Math.pow(-1,i / 2)*Math.pow(x, i)/factorial ;
+                }
+            }
+        return soln;
+    }
+
+    const y = Array.from(x, (x) => cos_approx(d,x))
+    source.data = { x, y}
+""")
+
+degree.js_on_change("value", cos_callback)
+show(column(cos_degree, cos_plot))
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mNameError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 42[39m
+[32m     18[39m cos_degree = Slider(title=[33m"[39m[33mdegree[39m[33m"[39m, value=[32m4[39m, start=[32m0[39m, end=[32m20[39m, step=[32m2[39m)
+[32m     20[39m cos_callback = CustomJS(args=[38;5;28mdict[39m(source=cos_approx), code=[33m"""[39m[33m [39m
+[32m     21[39m [33m    const d = cb_obj.value[39m
+[32m     22[39m [33m    const x = source.data.x[39m
+[32m   (...)[39m[32m     39[39m [33m    source.data = [39m[33m{[39m[33m x, y}[39m
+[32m     40[39m [33m"""[39m)
+[32m---> [39m[32m42[39m [43mdegree[49m.js_on_change([33m"[39m[33mvalue[39m[33m"[39m, cos_callback)
+[32m     43[39m show(column(cos_degree, cos_plot))
+
+[31mNameError[39m: name 'degree' is not defined
+
