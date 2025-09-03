@@ -11,7 +11,12 @@ Let $n \geq 0$ and suppose that $f:(-a,a) \to \mathbb{R}$ is $n+1$-times differe
 ```
 where $n! = n \cdot (n-1) \cdots 2 \cdot 1$ and $0! := 1$. The same formula holds for $x <0$ where $c$ is taken in $(x,0)$ instead. 
 ````
-So, if we apply our example of $f(x) = \cos(x)$, then we know that $f(0) = 1, f'(0) = -\sin(0) = 0, f''(0) = -\cos(0) = -1$, and $f'''(c) = \sin(c)$, by Taylor's Theorem for $n = 2$, we get that there is some $c \in (0,x)$ such that 
+So, if we apply our example of $f(x) = \cos(x)$, then we know that 
+- $f(0) = 1$, 
+- $f'(0) = -\sin(0) = 0$, 
+- $f''(0) = -\cos(0) = -1$, and 
+-$f'''(c) = \sin(c)$, 
+by Taylor's Theorem for $n = 2$, we get that there is some $c \in (0,x)$ such that 
 ```{math}
     \cos(x) &= 1 + \frac{0 \cdot x}{1!} - \frac{x^2}{2!} + \frac{\sin(c)}{3!}x^3  \\
     &= 1 - \frac{x^2}{2} + \frac{\sin(c)}{6} x^3\;.

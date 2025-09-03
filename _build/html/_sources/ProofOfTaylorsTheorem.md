@@ -43,3 +43,4 @@ The same statement is true for $x < 0$, where $(0,x)$ is replaced with $(x,0)$.
 ````{prf:proof}
     The first statement is an immediate consequence of Taylor's Theorem. The second follows from the squeeze theorem. 
 ````
+In the next page are a few exercises to test your knowledge. 
